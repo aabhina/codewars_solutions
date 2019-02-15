@@ -3,9 +3,41 @@ import java.util.*;
 public class Solution {
 
     public static void main(String[] args) {
-        System.out.println(listSquared(42,250));
-        //System.out.println(findAllDivisorsFor(42));
+        System.out.println(scramble("scriptjavx", "javascript"));
 
+    }
+
+    public static boolean scramble(String str1, String str2) {
+        // your code
+        boolean isScramble = true;
+
+        if(str1.length() < str2.length()) {
+            isScramble = false;
+        }
+
+        Map<Character, Integer> str2Map = new HashMap<>();
+        for(char c : str2.toCharArray()) {
+            if(str2Map.containsKey(c)) {
+                str2Map.put(c, (str2Map.get(c) + 1));
+            }
+            else {
+                str2Map.put(c,1);
+            }
+        }
+
+        for(char c : str1.toCharArray()) {
+            if(str2Map.containsKey(c)) {
+                str2Map.put(c, (str2Map.get(c) -1));
+            }
+        }
+
+        for(Character c : str2Map.keySet()) {
+            if(str2Map.get(c) > 0) {
+                isScramble = false;
+            }
+        }
+
+        return isScramble;
     }
 
 
