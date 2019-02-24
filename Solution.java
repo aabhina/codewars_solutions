@@ -3,9 +3,88 @@ import java.util.*;
 public class Solution {
 
     public static void main(String[] args) {
-        System.out.println(scramble("scriptjavx", "javascript"));
+        int[][] intervals = {{5, 8}, {3, 6}, {1, 2}};
+        //int[][] intervals1 = {{1,4},{3,6},{2,8}};
+        System.out.println(sumIntervals(intervals));
 
     }
+
+    public static int sumIntervals(int[][] intervals) {
+        // TODO: implement this method
+        int sumOfIntervals = 0;
+
+        if(null == intervals || intervals.length == 0) {
+            return sumOfIntervals;
+        }
+
+        int minOfCurrentInterval = 0;
+        int maxOfCurrentInterval = 0;
+
+        Map<Integer, Integer[]> mp = new LinkedHashMap<>();
+
+        for(int i = 0; i < intervals.length; i++) {
+            mp.put(i, new Integer[]{intervals[i][0], intervals[i][1]});
+            System.out.println(Arrays.toString(mp.get(i)));
+        }
+
+
+        for(int i = 0; i < intervals.length; i++) {
+
+            if(i == 0 ) {
+                minOfCurrentInterval = intervals[i][0];
+                maxOfCurrentInterval = intervals[i][1];
+                sumOfIntervals = maxOfCurrentInterval - minOfCurrentInterval;
+                continue;
+            }
+
+            for(int j = 0; j < i; j++) {
+                if(intervals[i][0] < mp.get(j)[1] && intervals[i][0] > mp.get(j)[0]) {
+                    if(intervals[i][1] > mp.get(j)[1]) {
+                        sumOfIntervals += (intervals[i][1] - mp.get(j)[1]);
+                    }
+                }
+                else if(intervals[i][0] < mp.get(j)[0] && intervals[i][0] > mp.get(j)[0]) {
+                    if(intervals[i][1] > mp.get(j)[1]) {
+                        sumOfIntervals += (intervals[i][1] - mp.get(j)[1]);
+                    }
+                }
+            }
+
+
+            if(intervals[i][0] < minOfCurrentInterval && intervals[i][1] > maxOfCurrentInterval) {
+                minOfCurrentInterval = intervals[i][0];
+                maxOfCurrentInterval = intervals[i][1];
+
+                sumOfIntervals = maxOfCurrentInterval - minOfCurrentInterval;
+            }
+
+            //disjoint interval
+            else if(intervals[i][0] >= maxOfCurrentInterval) {
+                minOfCurrentInterval = intervals[i][0];
+                maxOfCurrentInterval = intervals[i][1];
+                sumOfIntervals += (maxOfCurrentInterval - minOfCurrentInterval);
+            }
+
+            else if(intervals[i][0] < maxOfCurrentInterval && intervals[i][1] > maxOfCurrentInterval) {
+                sumOfIntervals += (intervals[i][1] - maxOfCurrentInterval);
+                maxOfCurrentInterval = intervals[i][1];
+            }
+
+            /*else if(intervals[i][0] < minOfCurrentInterval && intervals[i][1] < minOfCurrentInterval) {
+                sumOfIntervals += (intervals[i][1] - intervals[i][0]);
+                minOfCurrentInterval = intervals[i][0];
+            }*/
+
+            else if(intervals[i][0] < minOfCurrentInterval && intervals[i][1]  > minOfCurrentInterval && intervals[i][1] < maxOfCurrentInterval) {
+                sumOfIntervals += (minOfCurrentInterval - intervals[i][0]);
+                minOfCurrentInterval = intervals[i][0];
+            }
+
+        }
+
+        return sumOfIntervals;
+    }
+
 
     public static boolean scramble(String str1, String str2) {
         // your code
