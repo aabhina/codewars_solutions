@@ -8,6 +8,20 @@ public class Solution {
         System.out.println(sumIntervals(intervals));
 
     }
+    
+    //Print duplicate characters from String
+    private static List<Character> printDuplicateCharactersFrom(String s) {
+        List<Character> charList =  new ArrayList<>();
+        Set<Character> uniqueCharSet = new HashSet<>();
+
+        for(Character c : s.toCharArray()) {
+            if(!uniqueCharSet.add(c)) {
+                charList.add(c);
+            }
+        }
+
+        return charList;
+    }
 
     public static int sumIntervals(int[][] intervals) {
         // TODO: implement this method
